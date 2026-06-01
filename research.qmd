@@ -1,0 +1,192 @@
+---
+title: "Research"
+format: html
+execute:
+  echo: false
+  warning: false
+  message: false
+toc: false
+---
+
+This page lists my research publications. Click a paper’s title to visit the publisher page and access the official version, click Preprint to view the free preprint version. The Materials link leads to an open repository with data and code.
+
+```{r setup}
+library(tidyverse)
+library(htmltools)
+library(yaml)
+
+`%||%` <- function(a, b) if (is.null(a) || length(a) == 0) b else a
+# Return NA_character_ for empty-ish strings
+nz_chr <- function(x) {
+  x <- as.character(x)
+  x[is.na(x) | trimws(x) == ""] <- NA_character_
+  x
+}
+# Logical helper: TRUE when string is non-empty (suitable for if())
+nz_bool <- function(x) {
+  x <- as.character(x)
+  !is.na(x) & trimws(x) != ""
+}
+
+fmt_authors_card <- function(authors_field) {
+  if (is.null(authors_field) || length(authors_field) == 0) return(NA_character_)
+  # authors expected as a single string like 'A. One, B. Two'
+  a <- as.character(authors_field)
+  a
+}
+
+normalize_link <- function(x) {
+  y <- as.character(x)
+  y[is.na(y)] <- NA_character_
+  y <- trimws(y)
+  y[y == "" | tolower(y) == "na"] <- NA_character_
+  ok <- !is.na(y)
+  doi_pref <- ok & grepl("^doi:\\s*", y, ignore.case = TRUE)
+  y[doi_pref] <- sub("^doi:\\s*", "", y[doi_pref], ignore.case = TRUE)
+  bare_doi <- ok & grepl("^10\\.", y)
+  y[bare_doi] <- paste0("https://doi.org/", y[bare_doi])
+  domain_like <- ok & grepl("^(www\\.|[A-Za-z0-9.-]+\\.[A-Za-z]{2,})(/|$)", y)
+  no_scheme   <- ok & !grepl("^https?://", y, ignore.case = TRUE)
+  needs_scheme <- domain_like & no_scheme
+  y[needs_scheme] <- paste0("https://", y[needs_scheme])
+  y
+}
+
+build_card <- function(item) {
+  key <- item$id %||% paste0("p-", sample(1:1e6, 1))
+  title <- item$title %||% "Untitled"
+  authors <- fmt_authors_card(item$authors %||% NA_character_)
+  year <- as.character(item$year %||% "")
+  venue <- item$venue %||% ""
+  abstract <- item$abstract %||% NA_character_
+  yaml_raw <- capture.output(str(item))
+  link <- normalize_link(item$link %||% NA_character_)
+  preprint_url <- normalize_link(item$preprint %||% NA_character_)
+  materials_url <- normalize_link(item$materials %||% NA_character_)
+
+  payloads <- tags$div(
+    style = "display:none;",
+    tags$div(class = "payload-abstract", abstract %||% "")
+  )
+
+  ttl_node <- if (nz_bool(link %||% "")) {
+    tags$div(class = "pub-title", tags$a(title, href = link, target = "_blank", rel = "noopener"))
+  } else {
+    tags$div(class = "pub-title", title)
+  }
+
+  meta <- tags$div(
+    class = "pub-meta",
+    if (nz_bool(authors %||% "")) tagList(HTML(authors), tags$br()) else NULL,
+    if (nz_bool(venue %||% "")) tags$em(venue) else NULL
+  )
+
+  actions <- tags$div(
+    class = "pub-actions",
+    tags$a("Abstract", href = "#", `data-action` = "abstract", role = "button"),
+    if (nz_bool(preprint_url %||% "")) tags$a("Preprint", class = "external", href = preprint_url, target = "_blank", rel = "noopener") else NULL,
+    if (nz_bool(materials_url %||% "")) tags$a("Materials", class = "external", href = materials_url, target = "_blank", rel = "noopener") else NULL,
+    if (nz_bool(link %||% "")) tags$a("Link", class = "external", href = link, target = "_blank", rel = "noopener") else NULL
+  )
+
+  toggle_panel <- tags$div(
+    class = "toggle-area",
+    `data-current` = "",
+    tags$button(class = "copy-btn", "Copy"),
+    tags$span(class = "copy-toast", "Copied!"),
+    tags$div(class = "panel-label", "—"),
+    tags$div(class = "content")
+  )
+
+  tags$div(class = "pub-card", `data-key` = key, ttl_node, meta, actions, toggle_panel, payloads)
+}
+
+```
+
+```{css}
+/* Styles adapted from reference pub.qmd */
+.year-group { margin: 28px 0 8px; }
+.year-title { margin: 0; font-size: 1.35rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 2px; }
+.pub-card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; margin: 14px 0; background: #fff; }
+.pub-title { font-weight: 600; font-size: 1.05rem; margin-bottom: 4px; }
+.pub-meta { color: #555; font-size: 0.95rem; margin-bottom: 8px; }
+.pub-actions { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 8px; margin-bottom: 8px; }
+.pub-actions a { text-decoration: none; font-size: 0.92rem; border-bottom: 1px dotted #999; color: #0b66c3; }
+.pub-actions a.external { border-bottom-style: solid; }
+.toggle-area { display: none; position: relative; border: 1px solid #000; border-radius: 10px; padding: 12px 44px 12px 12px; background: #fafafa; margin-top: 10px; overflow: auto; }
+.toggle-area .panel-label { font-size: 0.82rem; color: #333; font-weight: 600; text-transform: uppercase; opacity: 0.85; margin-bottom: 6px; }
+.toggle-area pre { white-space: pre-wrap; word-wrap: break-word; margin: 0; }
+.copy-btn { position: absolute; top: 6px; right: 6px; border: 1px solid #ddd; background: #fff; font-size: 0.85rem; padding: 4px 8px; border-radius: 6px; cursor: pointer; }
+.copy-toast { position: absolute; top: 6px; right: 70px; font-size: 0.8rem; background: #333; color: #fff; padding: 3px 7px; border-radius: 6px; display: none; }
+  .payload-abstract { display: none; }
+```
+
+```{=html}
+<script>
+(function() {
+  function getCard(el) { while (el && !el.classList?.contains('pub-card')) el = el.parentNode; return el; }
+  function showPanel(card, label, html) {
+    const area = card.querySelector('.toggle-area');
+    const labelEl = area.querySelector('.panel-label');
+    const contentEl = area.querySelector('.content');
+    const current = area.getAttribute('data-current');
+    if (current === label && area.style.display === 'block') { area.style.display = 'none'; area.setAttribute('data-current', ''); return; }
+    labelEl.textContent = label;
+    // Convert YAML literal newlines into HTML paragraphs and <br/> for single newlines
+    const paragraphs = String(html || '').split(/\r?\n\r?\n/).map(p => p.trim()).filter(p => p.length);
+    const safeHtml = paragraphs.map(p => '<p>' + p.replace(/\r?\n/g, '<br/>') + '</p>').join('');
+    contentEl.innerHTML = safeHtml || '<p>No abstract available.</p>';
+    area.style.display = 'block'; area.setAttribute('data-current', label);
+  }
+
+  document.addEventListener('click', function(evt) {
+    const a = evt.target.closest('a[data-action]'); if (!a) return; const action = a.getAttribute('data-action'); const card = getCard(a); if (!card) return; evt.preventDefault();
+    if (action === 'abstract') {
+      const payloadEl = card.querySelector('.payload-abstract');
+      const text = (payloadEl?.textContent || 'No abstract available.').trim();
+      showPanel(card, 'Abstract', text);
+      return;
+    }
+  }, false);
+
+  document.addEventListener('click', function(evt) {
+    const btn = evt.target.closest('.copy-btn'); if (!btn) return; const card = getCard(btn); const area = card.querySelector('.toggle-area'); const contentEl = area.querySelector('.content'); let textToCopy = ''; const pre = contentEl.querySelector('pre'); if (pre) textToCopy = pre.textContent; else textToCopy = contentEl.innerText;
+    navigator.clipboard.writeText(textToCopy).then(() => { const toast = area.querySelector('.copy-toast'); toast.style.display = 'inline-block'; setTimeout(() => { toast.style.display = 'none'; }, 1200); }).catch(() => { const ta = document.createElement('textarea'); ta.value = textToCopy; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(ta); });
+  }, false);
+
+})();
+</script>
+```
+
+```{r}
+#| label: build-rows
+data <- yaml::read_yaml("research.yml")
+rows <- tibble(
+  id = map_chr(data, ~ as.character(.x$id %||% "")),
+  title = map_chr(data, ~ as.character(.x$title %||% "")),
+  authors = map_chr(data, ~ as.character(.x$authors %||% "")),
+  year = map_chr(data, ~ as.character(.x$year %||% "")),
+  venue = map_chr(data, ~ as.character(.x$venue %||% "")),
+  link = map_chr(data, ~ as.character(.x$link %||% NA_character_)),
+  abstract = map_chr(data, ~ as.character(.x$abstract %||% "")),
+  preprint = map_chr(data, ~ as.character(.x$preprint %||% NA_character_)),
+  materials = map_chr(data, ~ as.character(.x$materials %||% NA_character_))
+)
+
+years <- rows |>
+  distinct(year) |>
+  arrange(desc(as.numeric(year))) |>
+  pull(year)
+
+groups <- lapply(years, function(y) {
+  subset <- rows |> filter(year == y)
+  cards <- lapply(seq_len(nrow(subset)), function(i) build_card(as.list(subset[i, ])))
+  tags$div(
+    class = "year-group",
+    tags$h2(class = "year-title anchored", id = paste0("y-", y), str_to_title(y)),
+    tags$div(cards)
+  )
+})
+
+browsable(tags$div(groups))
+```

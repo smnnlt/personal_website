@@ -2,27 +2,41 @@ project:
   type: website
 
 website:
-  title: "personal_website"
+  title: "Simon Nolte"
+  description: "Simon Nolte is A PhD student at the German Sport University Cologne, investigating meta-research and data science in sport and exercise science."
+  site-url: "https://www.snolte.com"
+  repo-url: "https://github.com/smnnlt/personal_website"
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
-  
-  page-footer: 
+        text: About
+      - href: cv.qmd
+        text: CV
+      - href: research.qmd
+        text: Research
+      - href: teaching.qmd
+        text: Teaching
+    right:
+      - icon: github
+        href: "https://github.com/smnnlt"
+      - text: "{{< fa brands orcid>}}"
+        href: https://orcid.org/0000-0003-1643-1860
+      - text: "{{< fa brands researchgate>}}"
+        href: https://www.researchgate.net/profile/Simon-Nolte
+      - text: "{{< fa brands google-scholar>}}"
+        href: https://scholar.google.com/citations?user=vhHNbmYAAAAJ
+  page-footer:
       center:
       - text: "Impressum"
         href: impressum.qmd
       - text: "Privacy"
         href: privacy.qmd
-
+      right: "View source code on [Github](https://github.com/smnnlt/personal_website)"
 format:
   html:
     theme:
-      - cosmo
+      - flatly
       - brand
-    css: styles.css
-    toc: true
 
 
 

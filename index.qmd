@@ -1,7 +1,20 @@
 ---
-title: "personal_website"
+title: "Simon Nolte"
+about: 
+  template: jolla
+  image: images/profil.jpg
+  links:
+    - icon: github
+      text: Github
+      href: https://github/smnnlt
+    - icon: orcid
+      text: "{{< fa brands orcid>}} ORCID"
+      href: https://orcid.org/0000-0003-1643-1860
+  
 ---
 
-This is a Quarto website.
+I am a PhD student at the [German Sport University Cologne](https://www.dshs-koeln.de/en/). My research focusses on reproducibility, research methodology, and applied statistics, mainly in the field of sports and exercise science. 
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+My current projects include an investigation of the reproducibility of published sports science research, a review of statistical practices in meta-analyses in sport science, and the development of a tool to extract data from articles for research synthesis. I have worked as a data analyst on different projects in the fields of sports performance analysis and applied physiology.
+
+I believe that more transparency and rigor can lead to more trustworthy and impactful research. Therefore, I commit to open science practices, such as preregistration and data sharing, and support the mission of [STORK](https://www.storkinesiology.org/). As part of my research, I have developed open-source software tools for the reproducible analysis of exercise-related data. I also teach data science and statistics to students in the field of sport and exercise science.
