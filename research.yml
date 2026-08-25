@@ -62,6 +62,7 @@
   year: 2023
   venue: "SportRxiv"
   preprint: "https://doi.org/10.51224/SRXIV.317"
+  materials: "https://github.com/smnnlt/trihamburg"
   abstract: |
     Purpose: To assess the power demands of male elite triathletes during the World Championships and investigate the relationship between power output and positioning at turns.
     Methods: We analyzed power and position data from 5 out of 8 riders of the front group for the 2020 sprint triathlon World Championship. We created power profiles and distributions and investigated the influence of position on power output with Bayesian hierarchical models.
@@ -122,3 +123,13 @@
     Methods: A retrospective data analysis was conducted on 468 observations (female: n = 252; male: n = 216) from 379 junior throwing athletes (female: n = 205, age: 15.5 ± 1.2 y; male: n = 174, age: 15.4 ± 1.1 y). Maturity offset was estimated with the widely used non-invasive Mirwald method. Performance was assessed using a standardized test battery including sprints, jumps, power-oriented throwing tests and a 12-minute run. Associations between maturity offset and test performance were analyzed using linear mixed-effects models.
     Results: Higher maturity offset was positively related to performance of throwing-related tests, corresponding to an increase of 12.8% (95% CI: 10.3, 15.3; β = 0.37) in the backward overhead shot throw and 11.9% (95% CI: 9.7, 14.1; β = 0.38) in the forward shot throw for athletes who had a maturity offset that was one year higher than their same-aged peers. Effects on other motor tests were small to trivial (−2.9 to 2.3% performance difference; β = −0.14 to 0.14).
     Discussion: Maturity offset affects physical test outcomes in youth throwers, especially in power-related throwing tasks. These findings highlight the importance of considering maturity offset when interpreting test results to reduce bias in talent identification and better support long-term athlete development.
+
+- id: Severin2026b
+  title: "Beyond the growth spurt: Maturity offset, test performance, and squad attainment in youth track and field jumpers"
+  authors: "Jannik Severin, Simon Nolte, Thomas Abel, Marlen Schapschröer"
+  year: 2026
+  venue: "International Journal of Sports Science & Coaching"
+  link: "https://doi.org/10.1177/17479541261476571"
+  materials: "https://doi.org/10.5281/zenodo.18886568"
+  abstract: |
+    Evidence on maturity–performance associations beyond the growth spurt in youth track and field jumpers remains limited. This study aimed to 1) quantify associations between maturity offset and performance in post-age at peak height velocity jumpers and their age-related variation, and 2) compare maturity timing and performance across squad levels. Retrospective multi-site data from the German Athletics Association were analyzed (791 observations from 581 jumpers; 15.4 ± 1.1 y). Maturity offset was estimated using non-invasive Mirwald equations, and analyses were restricted to post-age at peak height velocity observations. Outcomes included sprints, jumps, power-oriented throwing and 12-min run test. Associations were analyzed using linear mixed-effects models, adjusted for chronological age and sex. Effect estimates were reported as percentage differences from performance means for cross-test comparison and practical interpretation. In a subsample, adjusted mixed models assessed squad-differences. Associations were test-specific. Forward shot throw showed the clearest effect, with improvements of 11.9% (95% CI: 9.2, 14.6) in males and 7.7% (95% CI: 5.3, 10.1) in females per additional year of maturity offset at the centered age, with effects attenuating with age. Sprint and countermovement jump outcomes showed effects close to zero. Endurance and reactive/technical tests showed complex patterns with wide confidence intervals. Estimated maturity timing was 0.18 years (95% CI: 0.03, 0.33) earlier in higher squads, which outperformed lower squads in reactive jumps and selected sprint splits. These findings support maturity-informed, discipline-specific interpretation of test batteries in post-age at peak height velocity jumpers and the value of longitudinal monitoring for equitable talent development.
